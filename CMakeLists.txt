@@ -10,6 +10,8 @@ add_library(
         STATIC
         includes/context.h
         src/context.c
+        includes/validate.h
+        src/validate.c
 )
 
 add_executable(
