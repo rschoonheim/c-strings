@@ -210,12 +210,65 @@ static void test_rss_iterator_index_move()
     free(iterator_result4);
 }
 
+static void test_rss_iterator_current_char()
+{
+    // Test case 1: nullptr iterator
+    //
+    assert(rss_iterator_current_char(nullptr) == '\0');
+
+    // Test case 2: iterator without a string
+    //
+    rss_string_iterator iterator_without_string = { nullptr, 0 };
+    assert(rss_iterator_current_char(&iterator_without_string) == '\0');
+
+    // Test case 3: iterator at end of string
+    //
+    const char* str3 = "Hello";
+    size_t len3 = 5;
+    size_t cap3 = 10;
+    rss_create_result* result3 = rss(str3, len3, cap3);
+    assert(result3 != nullptr);
+    assert(result3->error == false);
+    assert(result3->error_code == RSS_STRING_ERROR_NONE);
+    assert(result3->string != nullptr);
+    rss_iterator_create_result* iterator_result3 = rss_iterator_create(result3->string);
+    assert(iterator_result3 != nullptr);
+    assert(iterator_result3->error == false);
+    assert(iterator_result3->error_code == RSS_STRING_ITERATOR_ERROR_NONE);
+
+    iterator_result3->iterator->current_index = len3; // Move to end of string
+    assert(rss_iterator_current_char(iterator_result3->iterator) == '\0');
+    free(iterator_result3->iterator);
+    free(iterator_result3);
+
+    // Test case 4: valid iterator
+    //
+    const char* str2 = "Hello";
+    size_t len2 = 5;
+    size_t cap2 = 10;
+    rss_create_result* result4 = rss(str2, len2, cap2);
+    assert(result4 != nullptr);
+    assert(result4->error == false);
+    assert(result4->error_code == RSS_STRING_ERROR_NONE);
+    assert(result4->string != nullptr);
+    rss_iterator_create_result* iterator_result4 = rss_iterator_create(result4->string);
+    assert(iterator_result4 != nullptr);
+    assert(iterator_result4->error == false);
+    assert(iterator_result4->error_code == RSS_STRING_ITERATOR_ERROR_NONE);
+
+    assert(rss_iterator_current_char(iterator_result4->iterator) == 'H');
+
+    free(iterator_result4->iterator);
+    free(iterator_result4);
+}
+
 int main()
 {
     test_rss_iterator_create();
     test_rss_iterator_destroy();
     test_rss_iterator_at_end();
     test_rss_iterator_index_move();
+    test_rss_iterator_current_char();
 
     return 0;
 }
