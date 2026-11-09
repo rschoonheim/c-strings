@@ -12,6 +12,8 @@ add_library(
         src/string.c
         includes/alphabet.h
         src/alphabet.c
+        includes/iterator.h
+        src/iterator.c
 )
 
 add_executable(
@@ -32,4 +34,14 @@ target_link_libraries(02_test_alphabet romano_schoonheim_c_strings)
 add_test(
         NAME 02_test_alphabet
         COMMAND 02_test_alphabet
+)
+
+add_executable(
+        03_test_iterator
+        test/03-test-iterator.c
+)
+target_link_libraries(03_test_iterator romano_schoonheim_c_strings)
+add_test(
+        NAME 03_test_iterator
+        COMMAND 03_test_iterator
 )

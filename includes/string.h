@@ -81,5 +81,16 @@ bool rss_string_contains_substring(const rss_string* rss, const char* substring)
  */
 bool rss_string_length_between(const rss_string* s, size_t min_len, size_t max_len);
 
+/**
+ * @brief   wipes the contents of the rss_string structure before freeing
+ *          its memory. This is a security measure to prevent sensitive data
+ *          from being recovered from memory after the string is freed.
+ *
+ * @param   {rss_string*} s - the rss_string to be wiped and freed
+ *
+ * @return  {bool} - true if the string was successfully wiped and freed,
+ *                   false otherwise
+ */
+bool rss_string_wipe(rss_string* s);
 
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_STRING_H

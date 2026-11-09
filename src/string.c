@@ -175,3 +175,18 @@ bool rss_string_length_between(const rss_string* s, size_t min_len, size_t max_l
     return s->len >= min_len && s->len <= max_len;
 }
 
+bool rss_string_wipe(rss_string* s)
+{
+    if (s == nullptr || s->array == nullptr)
+    {
+        return false;
+    }
+
+    for (size_t i = 0; i < s->len; i++)
+    {
+        s->array[i] = '\0';
+    }
+    s->len = 0;
+    return true;
+}
+
