@@ -77,6 +77,16 @@ rss_alphabet_create_result* rss_alphabet_create(const char* characters, size_t l
     );
 }
 
+void rss_alphabet_destroy(rss_alphabet* alphabet)
+{
+    if (alphabet == nullptr)
+    {
+        return;
+    }
+
+    free(alphabet->array);
+    free(alphabet);
+}
 
 bool rss_alphabet_accepts(const rss_alphabet* alphabet, const rss_string* s)
 {

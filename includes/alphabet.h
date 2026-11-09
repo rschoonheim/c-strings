@@ -32,6 +32,14 @@ typedef struct rss_alphabet_create_result
  */
 rss_alphabet_create_result * rss_alphabet_create(const char* characters, size_t len);
 
+/*
+ * @brief   destroy the given rss_alphabet structure and free its memory
+ *
+ * @param   {rss_alphabet*} alphabet - the rss_alphabet to be destroyed
+ *
+ * @return  {void}
+ */
+void rss_alphabet_destroy(rss_alphabet* alphabet);
 
 /**
  * @brief   does the rss_alphabet accept the given rss_string?
