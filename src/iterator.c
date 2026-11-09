@@ -2,10 +2,10 @@
 
 #include <stdlib.h>
 
-static rss_string_iterator_create_result* rss_string_iterator_create_result_create(
+static rss_iterator_create_result* rss_iterator_create_result_create(
     rss_string_iterator* iterator, bool error, int error_code)
 {
-    rss_string_iterator_create_result* result = malloc(sizeof(rss_string_iterator_create_result));
+    rss_iterator_create_result* result = malloc(sizeof(rss_iterator_create_result));
     if (result == nullptr)
     {
         return nullptr;
@@ -18,11 +18,11 @@ static rss_string_iterator_create_result* rss_string_iterator_create_result_crea
     return result;
 }
 
-rss_string_iterator_create_result* rss_string_iterator_create(rss_string* string)
+rss_iterator_create_result* rss_iterator_create(rss_string* string)
 {
     if (string == nullptr)
     {
-        return rss_string_iterator_create_result_create(
+        return rss_iterator_create_result_create(
             nullptr,
             true,
             RSS_STRING_ITERATOR_ERROR_STRING_NULL
@@ -32,7 +32,7 @@ rss_string_iterator_create_result* rss_string_iterator_create(rss_string* string
     rss_string_iterator* iterator = malloc(sizeof(rss_string_iterator));
     if (iterator == nullptr)
     {
-        return rss_string_iterator_create_result_create(
+        return rss_iterator_create_result_create(
             nullptr,
             true,
             RSS_STRING_ITERATOR_ERROR_MEMORY_ALLOCATION_FAILED
@@ -42,14 +42,14 @@ rss_string_iterator_create_result* rss_string_iterator_create(rss_string* string
     iterator->string = string;
     iterator->current_index = 0;
 
-    return rss_string_iterator_create_result_create(
+    return rss_iterator_create_result_create(
         iterator,
         false,
         RSS_STRING_ITERATOR_ERROR_NONE
     );
 }
 
-bool rss_string_iterator_destroy(rss_string_iterator* iterator, const bool secure)
+bool rss_iterator_destroy(rss_string_iterator* iterator, const bool secure)
 {
     if (iterator == nullptr || iterator->string == nullptr)
     {
@@ -77,7 +77,7 @@ bool rss_string_iterator_destroy(rss_string_iterator* iterator, const bool secur
     return true;
 }
 
-bool rss_string_iterator_at_end(const rss_string_iterator* iterator)
+bool rss_iterator_at_end(const rss_string_iterator* iterator)
 {
     if (iterator == nullptr || iterator->string == nullptr)
     {
@@ -87,7 +87,7 @@ bool rss_string_iterator_at_end(const rss_string_iterator* iterator)
     return iterator->current_index >= iterator->string->len;
 }
 
-bool rss_string_iterator_index_move(rss_string_iterator* iterator, size_t amount)
+bool rss_iterator_index_move(rss_string_iterator* iterator, size_t amount)
 {
     if (iterator == nullptr || iterator->string == nullptr)
     {
@@ -108,7 +108,7 @@ bool rss_string_iterator_index_move(rss_string_iterator* iterator, size_t amount
     return true;
 }
 
-char rss_string_iterator_current_char(const rss_string_iterator* iterator)
+char rss_iterator_current_char(const rss_string_iterator* iterator)
 {
     if (iterator == nullptr || iterator->string == nullptr)
     {

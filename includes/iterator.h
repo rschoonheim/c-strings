@@ -19,7 +19,7 @@ typedef struct rss_string_iterator_create_result
     bool error;
     int error_code;
     rss_string_iterator* iterator;
-} rss_string_iterator_create_result;
+} rss_iterator_create_result;
 
 /**
  * @brief   Creates a new rss_string_iterator structure for the given rss_string
@@ -28,7 +28,7 @@ typedef struct rss_string_iterator_create_result
  *
  * @return  {rss_string_iterator_create_result*} - a pointer to the result structure containing
  */
-rss_string_iterator_create_result * rss_string_iterator_create(rss_string *string);
+rss_iterator_create_result * rss_iterator_create(rss_string *string);
 
 /**
  * @brief   Destroys the given rss_string_iterator structure and frees its memory
@@ -38,7 +38,7 @@ rss_string_iterator_create_result * rss_string_iterator_create(rss_string *strin
  *
  * @return  {bool}
  */
-bool rss_string_iterator_destroy(rss_string_iterator* iterator, bool secure);
+bool rss_iterator_destroy(rss_string_iterator* iterator, bool secure);
 
 /**
  * @brief   Are we at the end of the string?
@@ -47,7 +47,7 @@ bool rss_string_iterator_destroy(rss_string_iterator* iterator, bool secure);
  *
  * @return  {bool} - true if the iterator is at the end of the string, false otherwise
  */
-bool rss_string_iterator_at_end(const rss_string_iterator* iterator);
+bool rss_iterator_at_end(const rss_string_iterator* iterator);
 
 /**
  * @brief   Forward the current index of the iterator by given amount
@@ -57,7 +57,7 @@ bool rss_string_iterator_at_end(const rss_string_iterator* iterator);
  *
  * @return  {bool} - true if the iterator was successfully forwarded, false otherwise
  */
-bool rss_string_iterator_index_move(rss_string_iterator* iterator, size_t amount);
+bool rss_iterator_index_move(rss_string_iterator* iterator, size_t amount);
 
 /**
  * @brief   Get the current character of the iterator
@@ -66,6 +66,6 @@ bool rss_string_iterator_index_move(rss_string_iterator* iterator, size_t amount
  *
  * @return  {char} - the current character of the iterator, or '\0' if the iterator is at the end of the string
  */
-char rss_string_iterator_current_char(const rss_string_iterator* iterator);
+char rss_iterator_current_char(const rss_string_iterator* iterator);
 
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_ITERATOR_H
