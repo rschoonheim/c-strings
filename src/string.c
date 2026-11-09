@@ -112,7 +112,7 @@ rss_create_result* rss(const char* str, const size_t len, const size_t cap)
     );
 }
 
-bool rss_string_contains_char(const rss_string* s, char c)
+bool rss_contains_char(const rss_string* s, char c)
 {
     if (s == nullptr || s->array == nullptr)
     {
@@ -129,7 +129,7 @@ bool rss_string_contains_char(const rss_string* s, char c)
     return false;
 }
 
-bool rss_string_contains_substring(const rss_string* rss, const char* substring)
+bool rss_contains_substring(const rss_string* rss, const char* substring)
 {
     if (rss == nullptr || rss->array == nullptr || substring == nullptr)
     {
@@ -166,7 +166,7 @@ bool rss_string_contains_substring(const rss_string* rss, const char* substring)
     return false;
 }
 
-bool rss_string_length_between(const rss_string* s, size_t min_len, size_t max_len)
+bool rss_length_between(const rss_string* s, size_t min_len, size_t max_len)
 {
     if (s == nullptr)
     {
@@ -175,7 +175,7 @@ bool rss_string_length_between(const rss_string* s, size_t min_len, size_t max_l
     return s->len >= min_len && s->len <= max_len;
 }
 
-bool rss_string_wipe(rss_string* s)
+bool rss_wipe(rss_string* s)
 {
     if (s == nullptr || s->array == nullptr)
     {

@@ -172,7 +172,7 @@ static void test_rss_string_contains_char()
     assert(result1->error == false);
     assert(result1->error_code == RSS_STRING_ERROR_NONE);
     assert(result1->string != nullptr);
-    assert(rss_string_contains_char(result1->string, 'e') == true);
+    assert(rss_contains_char(result1->string, 'e') == true);
     free(result1->string->array);
     free(result1->string);
     free(result1);
@@ -187,7 +187,7 @@ static void test_rss_string_contains_char()
     assert(result2->error == false);
     assert(result2->error_code == RSS_STRING_ERROR_NONE);
     assert(result2->string != nullptr);
-    assert(rss_string_contains_char(result2->string, 'z') == false);
+    assert(rss_contains_char(result2->string, 'z') == false);
     free(result2->string->array);
     free(result2->string);
     free(result2);
@@ -202,7 +202,7 @@ static void test_rss_string_contains_char()
     assert(result3->error == false);
     assert(result3->error_code == RSS_STRING_ERROR_NONE);
     assert(result3->string != nullptr);
-    assert(rss_string_contains_char(result3->string, 'a') == false);
+    assert(rss_contains_char(result3->string, 'a') == false);
     free(result3->string->array);
     free(result3->string);
     free(result3);
@@ -224,12 +224,12 @@ static void test_rss_string_contains_char()
     string4->len = len4;
     string4->cap = cap4;
 
-    assert(rss_string_contains_char(string4, 'a') == true);
-    assert(rss_string_contains_char(string4, 'b') == true);
-    assert(rss_string_contains_char(string4, RSS_NULL_TERMINATOR) == true);
-    assert(rss_string_contains_char(string4, 'c') == true);
-    assert(rss_string_contains_char(string4, 'd') == true);
-    assert(rss_string_contains_char(string4, 'e') == true);
+    assert(rss_contains_char(string4, 'a') == true);
+    assert(rss_contains_char(string4, 'b') == true);
+    assert(rss_contains_char(string4, RSS_NULL_TERMINATOR) == true);
+    assert(rss_contains_char(string4, 'c') == true);
+    assert(rss_contains_char(string4, 'd') == true);
+    assert(rss_contains_char(string4, 'e') == true);
 
     free(string4->array);
     free(string4);
@@ -247,7 +247,7 @@ static void test_rss_string_contains_substring()
     assert(result1->error == false);
     assert(result1->error_code == RSS_STRING_ERROR_NONE);
     assert(result1->string != nullptr);
-    assert(rss_string_contains_substring(result1->string, "world") == true);
+    assert(rss_contains_substring(result1->string, "world") == true);
     free(result1->string->array);
     free(result1->string);
     free(result1);
@@ -262,7 +262,7 @@ static void test_rss_string_contains_substring()
     assert(result2->error == false);
     assert(result2->error_code == RSS_STRING_ERROR_NONE);
     assert(result2->string != nullptr);
-    assert(rss_string_contains_substring(result2->string, "planet") == false);
+    assert(rss_contains_substring(result2->string, "planet") == false);
     free(result2->string->array);
     free(result2->string);
     free(result2);
@@ -277,7 +277,7 @@ static void test_rss_string_contains_substring()
     assert(result3->error == false);
     assert(result3->error_code == RSS_STRING_ERROR_NONE);
     assert(result3->string != nullptr);
-    assert(rss_string_contains_substring(result3->string, "") == true);
+    assert(rss_contains_substring(result3->string, "") == true);
     free(result3->string->array);
     free(result3->string);
     free(result3);
@@ -301,7 +301,7 @@ static void test_rss_string_contains_substring()
     string4->len = len4;
     string4->cap = cap4;
 
-    assert(rss_string_contains_substring(string4, "b\0c") == true);
+    assert(rss_contains_substring(string4, "b\0c") == true);
     free(string4->array);
     free(string4);
 
@@ -324,7 +324,7 @@ static void test_rss_string_contains_substring()
     string5->len = len5;
     string5->cap = cap5;
 
-    assert(rss_string_contains_substring(string5, "bc") == false);
+    assert(rss_contains_substring(string5, "bc") == false);
     free(string5->array);
     free(string5);
 }
@@ -341,7 +341,7 @@ static void test_rss_string_length_between()
     assert(result1->error == false);
     assert(result1->error_code == RSS_STRING_ERROR_NONE);
     assert(result1->string != nullptr);
-    assert(rss_string_length_between(result1->string, 3, 7) == true);
+    assert(rss_length_between(result1->string, 3, 7) == true);
     free(result1->string->array);
     free(result1->string);
     free(result1);
@@ -356,7 +356,7 @@ static void test_rss_string_length_between()
     assert(result2->error == false);
     assert(result2->error_code == RSS_STRING_ERROR_NONE);
     assert(result2->string != nullptr);
-    assert(rss_string_length_between(result2->string, 6, 10) == false);
+    assert(rss_length_between(result2->string, 6, 10) == false);
     free(result2->string->array);
     free(result2->string);
     free(result2);
@@ -371,7 +371,7 @@ static void test_rss_string_length_between()
     assert(result3->error == false);
     assert(result3->error_code == RSS_STRING_ERROR_NONE);
     assert(result3->string != nullptr);
-    assert(rss_string_length_between(result3->string, 1, 4) == false);
+    assert(rss_length_between(result3->string, 1, 4) == false);
     free(result3->string->array);
     free(result3->string);
     free(result3);
@@ -394,8 +394,8 @@ static void test_rss_string_length_between()
     string4->len = len4;
     string4->cap = cap4;
 
-    assert(rss_string_length_between(string4, 6, 10) == true);
-    assert(rss_string_length_between(string4, 1, 5) == false);
+    assert(rss_length_between(string4, 6, 10) == true);
+    assert(rss_length_between(string4, 1, 5) == false);
     free(string4->array);
     free(string4);
 }

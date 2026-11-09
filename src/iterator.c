@@ -62,7 +62,7 @@ bool rss_iterator_destroy(rss_string_iterator* iterator, const bool secure)
     //
     if (secure)
     {
-        rss_string_wipe(iterator->string);
+        rss_wipe(iterator->string);
     }
 
     // Free the underlying rss_string and

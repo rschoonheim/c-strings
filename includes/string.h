@@ -31,7 +31,6 @@ typedef struct rss_string
 } rss_string;
 
 
-
 typedef struct rss_create_result
 {
     bool error;
@@ -58,7 +57,7 @@ rss_create_result* rss(const char* str, size_t len, size_t cap);
  *
  * @return {bool} - true if the character is found, false otherwise
  */
-bool rss_string_contains_char(const rss_string* s, char c);
+bool rss_contains_char(const rss_string* s, char c);
 
 /**
  * @brief   does the rss_string contains the given substring?
@@ -68,7 +67,7 @@ bool rss_string_contains_char(const rss_string* s, char c);
  *
  * @return  {bool} - true if the substring is found, false otherwise
  */
-bool rss_string_contains_substring(const rss_string* rss, const char* substring);
+bool rss_contains_substring(const rss_string* rss, const char* substring);
 
 /**
  * @brief   has the rss_string a length between a minimum and maximum length?
@@ -79,7 +78,7 @@ bool rss_string_contains_substring(const rss_string* rss, const char* substring)
  *
  * @return  {bool} - true if the string length is between min_len and max_len, false otherwise
  */
-bool rss_string_length_between(const rss_string* s, size_t min_len, size_t max_len);
+bool rss_length_between(const rss_string* s, size_t min_len, size_t max_len);
 
 /**
  * @brief   wipes the contents of the rss_string structure before freeing
@@ -91,6 +90,6 @@ bool rss_string_length_between(const rss_string* s, size_t min_len, size_t max_l
  * @return  {bool} - true if the string was successfully wiped and freed,
  *                   false otherwise
  */
-bool rss_string_wipe(rss_string* s);
+bool rss_wipe(rss_string* s);
 
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_STRING_H

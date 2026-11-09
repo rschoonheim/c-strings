@@ -8,7 +8,7 @@ length-aware string type, alphabet validation, and string iteration.
 - **`rss_string`** — length + capacity tracked string with explicit null terminator
 - **`rss_alphabet`** — define a character set and validate strings against it
 - **`rss_string_iterator`** — safe, bounds-checked iteration over a string
-- **Secure wipe** — `rss_string_wipe()` zeroes string contents before freeing, preventing sensitive data recovery from memory
+- **Secure wipe** — `rss_wipe()` zeroes string contents before freeing, preventing sensitive data recovery from memory
 - Explicit error reporting via result structs and error codes (no `errno`)
 
 ## Requirements
@@ -48,12 +48,17 @@ int main(void)
     rss_string* s = result->string;
 
     // Query it
-    rss_string_contains_char(s, 'e');              // true
-    rss_string_contains_substring(s, "ell");       // true
-    rss_string_length_between(s, 1, 10);           // true
+    rss_contains_char(s, 'e');                     // true
+    rss_contains_substring(s, "ell");              // true
+    rss_length_between(s, 1, 10);                  // true
 
     // Validate against an alphabet
-    rss_alphabet* lower = rss_alphabet_create("abcdefghijklmnopqrstuvwxyz", 26);
+    rss_alphabet_create_result* alpha_result =
+        rss_alphabet_create("abcdefghijklmnopqrstuvwxyz", 26);
+    if (alpha_result->error) {
+        return alpha_result->error_code;
+    }
+    rss_alphabet* lower = alpha_result->alphabet;
     rss_alphabet_accepts(lower, s);                // true
 
     // Iterate
@@ -66,6 +71,7 @@ int main(void)
 
     // Clean up — secure=true also wipes and frees the underlying string
     rss_iterator_destroy(it, true);
+    rss_alphabet_destroy(lower);
     return 0;
 }
 ```
@@ -76,15 +82,16 @@ int main(void)
 | Function | Description |
 |---|---|
 | `rss(str, len, cap)` | Create an `rss_string`; returns an `rss_create_result` with error info |
-| `rss_string_contains_char(s, c)` | Check if the string contains a character |
-| `rss_string_contains_substring(s, sub)` | Check if the string contains a substring |
-| `rss_string_length_between(s, min, max)` | Check if the string length is within bounds |
-| `rss_string_wipe(s)` | Securely zero the string contents, then free it |
+| `rss_contains_char(s, c)` | Check if the string contains a character |
+| `rss_contains_substring(s, sub)` | Check if the string contains a substring |
+| `rss_length_between(s, min, max)` | Check if the string length is within bounds |
+| `rss_wipe(s)` | Securely zero the string contents, then free it |
 
 ### `alphabet.h`
 | Function | Description |
 |---|---|
-| `rss_alphabet_create(chars, len)` | Create an alphabet from a character set |
+| `rss_alphabet_create(chars, len)` | Create an alphabet; returns an `rss_alphabet_create_result` with error info |
+| `rss_alphabet_destroy(alphabet)` | Free the alphabet and its character array |
 | `rss_alphabet_accepts(alphabet, s)` | True if the string only contains characters from the alphabet |
 
 ### `iterator.h`
@@ -103,6 +110,9 @@ int main(void)
 | `RSS_STRING_ERROR_MEMORY_ALLOCATION_FAILED` | `malloc` failed |
 | `RSS_STRING_ERROR_STR_LEN_MISMATCH` | Given length doesn't match the input string |
 | `RSS_STRING_ERROR_LENGTH_GREATER_THAN_CAPACITY` | `len > cap` |
+| `RSS_ALPHABET_CREATION_ERROR_CHARACTERS_NULL` | `characters` was null |
+| `RSS_ALPHABET_CREATION_ERROR_LEN_SIZE_MAX` | `len` equals `SIZE_MAX` (would overflow) |
+| `RSS_ALPHABET_CREATION_ERROR_MEMORY_ALLOCATION_FAILED` | `malloc` failed |
 | `RSS_STRING_ITERATOR_ERROR_STRING_NULL` | Iterator created with a null string |
 | `RSS_STRING_ITERATOR_ERROR_MEMORY_ALLOCATION_FAILED` | `malloc` failed |
 
