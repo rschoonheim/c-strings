@@ -1,4 +1,5 @@
 #include "../src/string.c"
+#include "../src/alphabet.c"
 
 #include <assert.h>
 #include <string.h>

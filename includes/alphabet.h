@@ -3,6 +3,23 @@
 
 #include "string.h"
 
+typedef struct rss_alphabet
+{
+    char* array;
+    size_t len;
+} rss_alphabet;
+
+/**
+ * @brief   creates a new rss_alphabet structure from a given string
+ *
+ * @param   {const char *} characters - the string to be converted to a rss_alphabet
+ * @param   {size_t} len - the length of the string
+ *
+ * @return  {rss_alphabet*} - a pointer to a rss_alphabet structure
+ */
+rss_alphabet* rss_alphabet_create(const char* characters, size_t len);
+
+
 /**
  * @brief   does the rss_alphabet accept the given rss_string?
  *
