@@ -107,3 +107,18 @@ bool rss_string_iterator_index_move(rss_string_iterator* iterator, size_t amount
     iterator->current_index += amount;
     return true;
 }
+
+char rss_string_iterator_current_char(const rss_string_iterator* iterator)
+{
+    if (iterator == nullptr || iterator->string == nullptr)
+    {
+        return RSS_NULL_TERMINATOR;
+    }
+
+    if (iterator->current_index >= iterator->string->len)
+    {
+        return RSS_NULL_TERMINATOR;
+    }
+
+    return iterator->string->array[iterator->current_index];
+}

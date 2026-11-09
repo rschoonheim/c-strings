@@ -59,4 +59,13 @@ bool rss_string_iterator_at_end(const rss_string_iterator* iterator);
  */
 bool rss_string_iterator_index_move(rss_string_iterator* iterator, size_t amount);
 
+/**
+ * @brief   Get the current character of the iterator
+ *
+ * @param   {const rss_string_iterator*} iterator - the iterator to get the current character from
+ *
+ * @return  {char} - the current character of the iterator, or '\0' if the iterator is at the end of the string
+ */
+char rss_string_iterator_current_char(const rss_string_iterator* iterator);
+
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_ITERATOR_H
