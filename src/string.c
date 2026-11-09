@@ -51,6 +51,15 @@ static rss_create_result* rss_result_create(rss_string* string, bool error, int 
 
 rss_create_result* rss(const char* str, const size_t len, const size_t cap)
 {
+    if (str == nullptr)
+    {
+        return rss_result_create(
+            nullptr,
+            true,
+            RSS_STRING_ERROR_NULL_POINTER
+        );
+    }
+
     rss_string* s = malloc(sizeof(rss_string));
     if (s == nullptr)
     {
