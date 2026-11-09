@@ -4,6 +4,11 @@
 
 rss_alphabet* rss_alphabet_create(const char* characters, size_t len)
 {
+    if (characters == nullptr)
+    {
+        return nullptr;
+    }
+
     rss_alphabet *alphabet = malloc(sizeof(rss_alphabet));
     if (alphabet == nullptr)
     {
