@@ -368,60 +368,77 @@ static void test_rss_string_contains_substring()
     free(string5);
 }
 
-static void test_rss_alphabet_accepts()
+static void test_rss_string_length_between()
 {
-    // Test case 1: string only contains characters from the alphabet
+    // Test case 1: length is within the range
     //
-    const char* str1 = "abc";
-    size_t len1 = 3;
+    const char* str1 = "Hello";
+    size_t len1 = 5;
     size_t cap1 = 10;
     rss_create_result* result1 = rss(str1, len1, cap1);
     assert(result1 != nullptr);
     assert(result1->error == false);
     assert(result1->error_code == RSS_STRING_ERROR_NONE);
     assert(result1->string != nullptr);
-    const rss_alphabet alphabet1 = { "abcde", 5 };
-    assert(rss_alphabet_accepts(&alphabet1, result1->string) == true);
+    assert(rss_string_length_between(result1->string, 3, 7) == true);
     free(result1->string->array);
     free(result1->string);
     free(result1);
 
-    // Test case 2: string contains characters not in the alphabet
+    // Test case 2: length is below the range
     //
-    const char* str2 = "abcx";
-    size_t len2 = 4;
+    const char* str2 = "Hello";
+    size_t len2 = 5;
     size_t cap2 = 10;
     rss_create_result* result2 = rss(str2, len2, cap2);
     assert(result2 != nullptr);
     assert(result2->error == false);
     assert(result2->error_code == RSS_STRING_ERROR_NONE);
     assert(result2->string != nullptr);
-    const rss_alphabet alphabet2 = { "abcde", 5 };
-    assert(rss_alphabet_accepts(&alphabet2, result2->string) == false);
+    assert(rss_string_length_between(result2->string, 6, 10) == false);
     free(result2->string->array);
     free(result2->string);
     free(result2);
 
-    // Test case 3: null terminator in the string
+    // Test case 3: length is above the range
     //
-    rss_string *string3 = malloc(sizeof(rss_string));
-    size_t len3 = 6;
+    const char* str3 = "Hello";
+    size_t len3 = 5;
     size_t cap3 = 10;
-    string3->array = malloc(sizeof(char) * (cap3 + 1));
-    string3->array[0] = 'a';
-    string3->array[1] = 'b';
-    string3->array[2] = RSS_NULL_TERMINATOR; // Null terminator in the middle
-    string3->array[3] = 'c';
-    string3->array[4] = 'd';
-    string3->array[5] = 'e';
-    string3->array[len3] = RSS_NULL_TERMINATOR;
+    rss_create_result* result3 = rss(str3, len3, cap3);
+    assert(result3 != nullptr);
+    assert(result3->error == false);
+    assert(result3->error_code == RSS_STRING_ERROR_NONE);
+    assert(result3->string != nullptr);
+    assert(rss_string_length_between(result3->string, 1, 4) == false);
+    free(result3->string->array);
+    free(result3->string);
+    free(result3);
 
-    string3->len = len3;
-    string3->cap = cap3;
+    // Test case 4: does count null terminator
+    //              in the middle of the string
+    //
+    rss_string *string4 = malloc(sizeof(rss_string));
+    size_t len4 = 6;
+    size_t cap4 = 10;
+    string4->array = malloc(sizeof(char) * (cap4 + 1));
+    string4->array[0] = 'a';
+    string4->array[1] = 'b';
+    string4->array[2] = RSS_NULL_TERMINATOR; // Null terminator
+    string4->array[3] = 'c';
+    string4->array[4] = 'd';
+    string4->array[5] = 'e';
+    string4->array[len4] = RSS_NULL_TERMINATOR;
 
-    const rss_alphabet alphabet3 = { "abcde", 5 };
-    assert(rss_alphabet_accepts(&alphabet3, string3) == false);
+    string4->len = len4;
+    string4->cap = cap4;
+
+    assert(rss_string_length_between(string4, 6, 10) == true);
+    assert(rss_string_length_between(string4, 1, 5) == false);
+    free(string4->array);
+    free(string4);
 }
+
 
 int main()
 {
@@ -431,7 +448,7 @@ int main()
     test_rss_alphabet_create();
     test_rss_string_contains_char();
     test_rss_string_contains_substring();
-    test_rss_alphabet_accepts();
+    test_rss_string_length_between();
 
     return 0;
 }

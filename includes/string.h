@@ -85,13 +85,15 @@ bool rss_string_contains_char(const rss_string* s, char c);
 bool rss_string_contains_substring(const rss_string* rss, const char* substring);
 
 /**
- * @brief   does the rss_alphabet accept the given rss_string?
+ * @brief   has the rss_string a length between a minimum and maximum length?
  *
  * @param   {const rss_string*} s - the rss_string to be checked
- * @param   {const rss_alphabet*} alphabet - the alphabet to be checked against
+ * @param   {size_t} min_len - the minimum length of the string
+ * @param   {size_t} max_len - the maximum length of the string
  *
- * @return  {bool} - true if the string only contains characters from the alphabet, false otherwise
+ * @return  {bool} - true if the string length is between min_len and max_len, false otherwise
  */
-bool rss_alphabet_accepts(const rss_alphabet* alphabet, const rss_string* s);
+bool rss_string_length_between(const rss_string* s, size_t min_len, size_t max_len);
+
 
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_STRING_H

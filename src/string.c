@@ -196,28 +196,12 @@ bool rss_string_contains_substring(const rss_string* rss, const char* substring)
     return false;
 }
 
-bool rss_alphabet_accepts(const rss_alphabet* alphabet, const rss_string* s)
+bool rss_string_length_between(const rss_string* s, size_t min_len, size_t max_len)
 {
-    if (s == nullptr || s->array == nullptr || alphabet == nullptr)
+    if (s == nullptr)
     {
         return false;
     }
-
-    for (size_t i = 0; i < s->len; i++)
-    {
-        bool found = false;
-        for (size_t j = 0; j < alphabet->len; j++)
-        {
-            if (s->array[i] == alphabet->array[j])
-            {
-                found = true;
-                break;
-            }
-        }
-        if (!found)
-        {
-            return false;
-        }
-    }
-    return true;
+    return s->len >= min_len && s->len <= max_len;
 }
+
