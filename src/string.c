@@ -21,7 +21,7 @@
 static bool rss_input_matches_length(const char* str, size_t len)
 {
     size_t str_len = 0;
-    while (str[str_len] != '\0')
+    while (str[str_len] != RSS_NULL_TERMINATOR)
     {
         str_len++;
     }
@@ -167,7 +167,7 @@ bool rss_string_contains_substring(const rss_string* rss, const char* substring)
     }
 
     size_t substring_len = 0;
-    while (substring[substring_len] != '\0')
+    while (substring[substring_len] != RSS_NULL_TERMINATOR)
     {
         substring_len++;
     }

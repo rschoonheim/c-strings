@@ -192,7 +192,7 @@ static void test_rss_alphabet_create()
     assert(alphabet3->len == len3);
     assert(alphabet3->array[0] == 'a');
     assert(alphabet3->array[1] == 'b');
-    assert(alphabet3->array[2] == '\0');
+    assert(alphabet3->array[2] == RSS_NULL_TERMINATOR);
     assert(alphabet3->array[3] == 'c');
     assert(alphabet3->array[4] == 'd');
     free(alphabet3->array);
@@ -254,18 +254,18 @@ static void test_rss_string_contains_char()
     string4->array = malloc(sizeof(char) * (cap4 + 1));
     string4->array[0] = 'a';
     string4->array[1] = 'b';
-    string4->array[2] = '\0'; // Null terminator in the middle
+    string4->array[2] = RSS_NULL_TERMINATOR; // Null terminator in the middle
     string4->array[3] = 'c';
     string4->array[4] = 'd';
     string4->array[5] = 'e';
-    string4->array[len4] = '\0';
+    string4->array[len4] = RSS_NULL_TERMINATOR;
 
     string4->len = len4;
     string4->cap = cap4;
 
     assert(rss_string_contains_char(string4, 'a') == true);
     assert(rss_string_contains_char(string4, 'b') == true);
-    assert(rss_string_contains_char(string4, '\0') == true);
+    assert(rss_string_contains_char(string4, RSS_NULL_TERMINATOR) == true);
     assert(rss_string_contains_char(string4, 'c') == true);
     assert(rss_string_contains_char(string4, 'd') == true);
     assert(rss_string_contains_char(string4, 'e') == true);
@@ -331,11 +331,11 @@ static void test_rss_string_contains_substring()
     string4->array = malloc(sizeof(char) * (cap4 + 1));
     string4->array[0] = 'a';
     string4->array[1] = 'b';
-    string4->array[2] = '\0'; // Null terminator in the middle
+    string4->array[2] = RSS_NULL_TERMINATOR; // Null terminator in the middle
     string4->array[3] = 'c';
     string4->array[4] = 'd';
     string4->array[5] = 'e';
-    string4->array[len4] = '\0';
+    string4->array[len4] = RSS_NULL_TERMINATOR;
 
     string4->len = len4;
     string4->cap = cap4;
@@ -354,11 +354,11 @@ static void test_rss_string_contains_substring()
     string5->array = malloc(sizeof(char) * (cap5 + 1));
     string5->array[0] = 'a';
     string5->array[1] = 'b';
-    string5->array[2] = '\0'; // Null terminator in the middle
+    string5->array[2] = RSS_NULL_TERMINATOR; // Null terminator in the middle
     string5->array[3] = 'c';
     string5->array[4] = 'd';
     string5->array[5] = 'e';
-    string5->array[len5] = '\0';
+    string5->array[len5] = RSS_NULL_TERMINATOR;
 
     string5->len = len5;
     string5->cap = cap5;
@@ -410,11 +410,11 @@ static void test_rss_alphabet_accepts()
     string3->array = malloc(sizeof(char) * (cap3 + 1));
     string3->array[0] = 'a';
     string3->array[1] = 'b';
-    string3->array[2] = '\0'; // Null terminator in the middle
+    string3->array[2] = RSS_NULL_TERMINATOR; // Null terminator in the middle
     string3->array[3] = 'c';
     string3->array[4] = 'd';
     string3->array[5] = 'e';
-    string3->array[len3] = '\0';
+    string3->array[len3] = RSS_NULL_TERMINATOR;
 
     string3->len = len3;
     string3->cap = cap3;
