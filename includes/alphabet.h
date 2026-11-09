@@ -3,11 +3,23 @@
 
 #include "string.h"
 
+#define RSS_ALPHABET_CREATION_ERROR_NONE 0
+#define RSS_ALPHABET_CREATION_ERROR_CHARACTERS_NULL 1
+#define RSS_ALPHABET_CREATION_ERROR_LEN_SIZE_MAX 2
+#define RSS_ALPHABET_CREATION_ERROR_MEMORY_ALLOCATION_FAILED 3
+
 typedef struct rss_alphabet
 {
     char* array;
     size_t len;
 } rss_alphabet;
+
+typedef struct rss_alphabet_create_result
+{
+    bool error;
+    int error_code;
+    rss_alphabet* alphabet;
+} rss_alphabet_create_result;
 
 /**
  * @brief   creates a new rss_alphabet structure from a given string
@@ -15,9 +27,10 @@ typedef struct rss_alphabet
  * @param   {const char *} characters - the string to be converted to a rss_alphabet
  * @param   {size_t} len - the length of the string
  *
- * @return  {rss_alphabet*} - a pointer to a rss_alphabet structure
+ * @return  {rss_alphabet_create_result*} - a pointer to the result structure containing
+ *                                          the created rss_alphabet or an error code
  */
-rss_alphabet* rss_alphabet_create(const char* characters, size_t len);
+rss_alphabet_create_result * rss_alphabet_create(const char* characters, size_t len);
 
 
 /**

@@ -10,22 +10,30 @@ static void test_rss_alphabet_create()
     //
     const char* characters1 = "abcde";
     size_t len1 = 5;
-    rss_alphabet* alphabet1 = rss_alphabet_create(characters1, len1);
+    rss_alphabet_create_result* alphabet1 = rss_alphabet_create(characters1, len1);
     assert(alphabet1 != nullptr);
-    assert(alphabet1->len == len1);
-    assert(strcmp(alphabet1->array, characters1) == 0);
-    free(alphabet1->array);
+    assert(alphabet1->error == false);
+    assert(alphabet1->error_code == RSS_ALPHABET_CREATION_ERROR_NONE);
+    assert(alphabet1->alphabet != nullptr);
+    assert(alphabet1->alphabet->len == len1);
+    assert(strcmp(alphabet1->alphabet->array, characters1) == 0);
+    free(alphabet1->alphabet->array);
+    free(alphabet1->alphabet);
     free(alphabet1);
 
     // Test case 2: empty string
     //
     const char* characters2 = "";
     size_t len2 = 0;
-    rss_alphabet* alphabet2 = rss_alphabet_create(characters2, len2);
+    rss_alphabet_create_result* alphabet2 = rss_alphabet_create(characters2, len2);
     assert(alphabet2 != nullptr);
-    assert(alphabet2->len == len2);
-    assert(strcmp(alphabet2->array, characters2) == 0);
-    free(alphabet2->array);
+    assert(alphabet2->error == false);
+    assert(alphabet2->error_code == RSS_ALPHABET_CREATION_ERROR_NONE);
+    assert(alphabet2->alphabet != nullptr);
+    assert(alphabet2->alphabet->len == len2);
+    assert(strcmp(alphabet2->alphabet->array, characters2) == 0);
+    free(alphabet2->alphabet->array);
+    free(alphabet2->alphabet);
     free(alphabet2);
 
     // Test case 3: null terminator can be part
@@ -33,30 +41,42 @@ static void test_rss_alphabet_create()
     //
     const char* characters3 = "ab\0cd";
     size_t len3 = 5;
-    rss_alphabet* alphabet3 = rss_alphabet_create(characters3, len3);
+    rss_alphabet_create_result* alphabet3 = rss_alphabet_create(characters3, len3);
     assert(alphabet3 != nullptr);
-    assert(alphabet3->len == len3);
-    assert(alphabet3->array[0] == 'a');
-    assert(alphabet3->array[1] == 'b');
-    assert(alphabet3->array[2] == RSS_NULL_TERMINATOR);
-    assert(alphabet3->array[3] == 'c');
-    assert(alphabet3->array[4] == 'd');
-    free(alphabet3->array);
+    assert(alphabet3->error == false);
+    assert(alphabet3->error_code == RSS_ALPHABET_CREATION_ERROR_NONE);
+    assert(alphabet3->alphabet != nullptr);
+    assert(alphabet3->alphabet->len == len3);
+    assert(alphabet3->alphabet->array[0] == 'a');
+    assert(alphabet3->alphabet->array[1] == 'b');
+    assert(alphabet3->alphabet->array[2] == RSS_NULL_TERMINATOR);
+    assert(alphabet3->alphabet->array[3] == 'c');
+    assert(alphabet3->alphabet->array[4] == 'd');
+    free(alphabet3->alphabet->array);
+    free(alphabet3->alphabet);
     free(alphabet3);
 
     // Test case 4: characters is nullptr
     //
     const char* characters4 = nullptr;
     size_t len4 = 5;
-    rss_alphabet* alphabet4 = rss_alphabet_create(characters4, len4);
-    assert(alphabet4 == nullptr);
+    rss_alphabet_create_result* alphabet4 = rss_alphabet_create(characters4, len4);
+    assert(alphabet4 != nullptr);
+    assert(alphabet4->error == true);
+    assert(alphabet4->error_code == RSS_ALPHABET_CREATION_ERROR_CHARACTERS_NULL);
+    assert(alphabet4->alphabet == nullptr);
+    free(alphabet4);
 
     // Test case 5: len is SIZE_MAX
     //
     const char* characters5 = "abcde";
     size_t len5 = SIZE_MAX;
-    rss_alphabet* alphabet5 = rss_alphabet_create(characters5, len5);
-    assert(alphabet5 == nullptr);
+    rss_alphabet_create_result* alphabet5 = rss_alphabet_create(characters5, len5);
+    assert(alphabet5 != nullptr);
+    assert(alphabet5->error == true);
+    assert(alphabet5->error_code == RSS_ALPHABET_CREATION_ERROR_LEN_SIZE_MAX);
+    assert(alphabet5->alphabet == nullptr);
+    free(alphabet5);
 }
 
 

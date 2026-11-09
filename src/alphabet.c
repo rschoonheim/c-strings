@@ -3,29 +3,60 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-rss_alphabet* rss_alphabet_create(const char* characters, size_t len)
+static rss_alphabet_create_result* rss_alphabet_create_result_create(rss_alphabet* alphabet, bool error, int error_code)
+{
+    rss_alphabet_create_result* result = malloc(sizeof(rss_alphabet_create_result));
+    if (result == nullptr)
+    {
+        return nullptr;
+    }
+
+    result->alphabet = alphabet;
+    result->error = error;
+    result->error_code = error_code;
+
+    return result;
+}
+
+rss_alphabet_create_result* rss_alphabet_create(const char* characters, size_t len)
 {
     if (characters == nullptr)
     {
-        return nullptr;
+        return rss_alphabet_create_result_create(
+            nullptr,
+            true,
+            RSS_ALPHABET_CREATION_ERROR_CHARACTERS_NULL
+        );
     }
 
     if (len == SIZE_MAX)
     {
-        return nullptr;
+        return rss_alphabet_create_result_create(
+            nullptr,
+            true,
+            RSS_ALPHABET_CREATION_ERROR_LEN_SIZE_MAX
+        );
     }
 
-    rss_alphabet *alphabet = malloc(sizeof(rss_alphabet));
+    rss_alphabet* alphabet = malloc(sizeof(rss_alphabet));
     if (alphabet == nullptr)
     {
-        return nullptr;
+        return rss_alphabet_create_result_create(
+            nullptr,
+            true,
+            RSS_ALPHABET_CREATION_ERROR_MEMORY_ALLOCATION_FAILED
+        );
     }
 
     alphabet->array = malloc(sizeof(char) * (len + 1));
     if (alphabet->array == nullptr)
     {
         free(alphabet);
-        return nullptr;
+        return rss_alphabet_create_result_create(
+            nullptr,
+            true,
+            RSS_ALPHABET_CREATION_ERROR_MEMORY_ALLOCATION_FAILED
+        );
     }
 
     for (size_t i = 0; i < len; i++)
@@ -39,7 +70,11 @@ rss_alphabet* rss_alphabet_create(const char* characters, size_t len)
     alphabet->len = len;
 
 
-    return alphabet;
+    return rss_alphabet_create_result_create(
+        alphabet,
+        false,
+        RSS_ALPHABET_CREATION_ERROR_NONE
+    );
 }
 
 
