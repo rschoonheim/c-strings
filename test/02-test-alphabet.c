@@ -2,6 +2,63 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
+
+static void test_rss_alphabet_create()
+{
+    // Test case 1: successful creation
+    //
+    const char* characters1 = "abcde";
+    size_t len1 = 5;
+    rss_alphabet* alphabet1 = rss_alphabet_create(characters1, len1);
+    assert(alphabet1 != nullptr);
+    assert(alphabet1->len == len1);
+    assert(strcmp(alphabet1->array, characters1) == 0);
+    free(alphabet1->array);
+    free(alphabet1);
+
+    // Test case 2: empty string
+    //
+    const char* characters2 = "";
+    size_t len2 = 0;
+    rss_alphabet* alphabet2 = rss_alphabet_create(characters2, len2);
+    assert(alphabet2 != nullptr);
+    assert(alphabet2->len == len2);
+    assert(strcmp(alphabet2->array, characters2) == 0);
+    free(alphabet2->array);
+    free(alphabet2);
+
+    // Test case 3: null terminator can be part
+    //              of the alphabet
+    //
+    const char* characters3 = "ab\0cd";
+    size_t len3 = 5;
+    rss_alphabet* alphabet3 = rss_alphabet_create(characters3, len3);
+    assert(alphabet3 != nullptr);
+    assert(alphabet3->len == len3);
+    assert(alphabet3->array[0] == 'a');
+    assert(alphabet3->array[1] == 'b');
+    assert(alphabet3->array[2] == RSS_NULL_TERMINATOR);
+    assert(alphabet3->array[3] == 'c');
+    assert(alphabet3->array[4] == 'd');
+    free(alphabet3->array);
+    free(alphabet3);
+
+    // Test case 4: characters is nullptr
+    //
+    const char* characters4 = nullptr;
+    size_t len4 = 5;
+    rss_alphabet* alphabet4 = rss_alphabet_create(characters4, len4);
+    assert(alphabet4 == nullptr);
+
+    // Test case 5: len is SIZE_MAX
+    //
+    const char* characters5 = "abcde";
+    size_t len5 = SIZE_MAX;
+    rss_alphabet* alphabet5 = rss_alphabet_create(characters5, len5);
+    assert(alphabet5 == nullptr);
+}
+
 
 static void test_rss_alphabet_accepts()
 {
@@ -60,6 +117,7 @@ static void test_rss_alphabet_accepts()
 
 int main()
 {
+    test_rss_alphabet_create();
     test_rss_alphabet_accepts();
     return 0;
 }

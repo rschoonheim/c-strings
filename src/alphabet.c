@@ -1,10 +1,16 @@
 #include "../includes/alphabet.h"
 
+#include <stdint.h>
 #include <stdlib.h>
 
 rss_alphabet* rss_alphabet_create(const char* characters, size_t len)
 {
     if (characters == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (len == SIZE_MAX)
     {
         return nullptr;
     }
