@@ -3,10 +3,11 @@
 
 #include "string.h"
 
-#define RSS_STRING_ITERATOR_ERROR_NONE 0
-#define RSS_STRING_ITERATOR_ERROR_STRING_NULL 1
-#define RSS_STRING_ITERATOR_ERROR_MEMORY_ALLOCATION_FAILED 2
-
+#define RSS_ITERATOR_ERROR_NONE 0
+#define RSS_ITERATOR_ERROR_STRING_NULL 1
+#define RSS_ITERATOR_ERROR_MEMORY_ALLOCATION_FAILED 2
+#define RSS_ITERATOR_ERROR_EXCEEDING_MAX_INPUT 3
+#define RSS_ITERATOR_ERROR_OUT_OF_BOUNDS 4
 
 typedef struct rss_string_iterator
 {
@@ -20,6 +21,19 @@ typedef struct rss_string_iterator_create_result
     int error_code;
     rss_string_iterator* iterator;
 } rss_iterator_create_result;
+
+typedef struct rss_iterator_look_result
+{
+    enum
+    {
+        RSS_ITERATOR_LOOK_DIRECTION_FORWARD = 1,
+        RSS_ITERATOR_LOOK_DIRECTION_NONE = 0,
+        RSS_ITERATOR_LOOK_DIRECTION_BACKWARD = -1
+    } direction;
+    char character;
+    bool error;
+    int error_code;
+} rss_iterator_look_result;
 
 /**
  * @brief   Creates a new rss_string_iterator structure for the given rss_string
@@ -67,5 +81,21 @@ bool rss_iterator_index_move(rss_string_iterator* iterator, size_t amount);
  * @return  {char} - the current character of the iterator, or '\0' if the iterator is at the end of the string
  */
 char rss_iterator_current_char(const rss_string_iterator* iterator);
+
+/**
+ * @brief   Look ahead or behind the current index of the iterator by given amount.
+ *          When the amount is positive, we look ahead, when the amount is negative,
+ *          we look behind.
+ *
+ * @param   {const rss_string_iterator*} iterator - the iterator to look ahead in
+ * @param   {size_t} amount - the amount to look ahead or behind the iterator by.
+ *                            @warning be aware of integer overflow / wrap around
+ *
+ *
+ * @return  {rss_iterator_look_result} -    a structure containing the character found,
+ *                                          the direction of the look,
+ */
+rss_iterator_look_result rss_iterator_look(const rss_string_iterator* iterator, size_t amount);
+
 
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_ITERATOR_H
