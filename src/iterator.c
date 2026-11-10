@@ -154,7 +154,6 @@ rss_iterator_look_result rss_iterator_look(const rss_string_iterator* iterator, 
 
     // Determine which direction we are looking in.
     //
-    printf("Amount: %zu\n", amount);
     const int direction = (amount > 0)
                               ? RSS_ITERATOR_LOOK_DIRECTION_FORWARD
                               : (amount < 0)
