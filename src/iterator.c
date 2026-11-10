@@ -1,9 +1,6 @@
 #include "../includes/iterator.h"
 
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <linux/limits.h>
 
 static rss_iterator_create_result* rss_iterator_create_result_create(
     rss_string_iterator* iterator, bool error, int error_code)
