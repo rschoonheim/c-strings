@@ -88,14 +88,13 @@ char rss_iterator_current_char(const rss_string_iterator* iterator);
  *          we look behind.
  *
  * @param   {const rss_string_iterator*} iterator - the iterator to look ahead in
- * @param   {size_t} amount - the amount to look ahead or behind the iterator by.
- *                            @warning be aware of integer overflow / wrap around
+ * @param   {int} amount - the amount to look ahead or behind the iterator by.
  *
  *
  * @return  {rss_iterator_look_result} -    a structure containing the character found,
  *                                          the direction of the look,
  */
-rss_iterator_look_result rss_iterator_look(const rss_string_iterator* iterator, size_t amount);
+rss_iterator_look_result rss_iterator_look(const rss_string_iterator* iterator, int amount);
 
 
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_ITERATOR_H

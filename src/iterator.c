@@ -126,7 +126,7 @@ char rss_iterator_current_char(const rss_string_iterator* iterator)
     return iterator->string->array[iterator->current_index];
 }
 
-rss_iterator_look_result rss_iterator_look(const rss_string_iterator* iterator, size_t amount)
+rss_iterator_look_result rss_iterator_look(const rss_string_iterator* iterator, int amount)
 {
     if (iterator == nullptr || iterator->string == nullptr)
     {
@@ -152,16 +152,19 @@ rss_iterator_look_result rss_iterator_look(const rss_string_iterator* iterator, 
         };
     }
 
-    // Determine the direction of the look based on the amount
+    // Determine which direction we are looking in.
     //
-    int direction = (amount > 0) ? RSS_ITERATOR_LOOK_DIRECTION_FORWARD :
-                    (amount < 0) ? RSS_ITERATOR_LOOK_DIRECTION_BACKWARD :
-                    RSS_ITERATOR_LOOK_DIRECTION_NONE;
+    printf("Amount: %zu\n", amount);
+    const int direction = (amount > 0)
+                              ? RSS_ITERATOR_LOOK_DIRECTION_FORWARD
+                              : (amount < 0)
+                              ? RSS_ITERATOR_LOOK_DIRECTION_BACKWARD
+                              : RSS_ITERATOR_LOOK_DIRECTION_NONE;
 
     return (rss_iterator_look_result){
-    .direction = direction,
-    .character = iterator->string->array[look_index],
-    .error = false,
-    .error_code = RSS_ITERATOR_ERROR_NONE
+        .direction = direction,
+        .character = iterator->string->array[look_index],
+        .error = false,
+        .error_code = RSS_ITERATOR_ERROR_NONE
     };
 }

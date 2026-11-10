@@ -323,6 +323,7 @@ static void test_rss_iterator_look()
     assert(look_result4.error == false);
     assert(look_result4.error_code == RSS_ITERATOR_ERROR_NONE);
     assert(look_result4.character == 'e');
+    assert(look_result4.direction == RSS_ITERATOR_LOOK_DIRECTION_FORWARD);
 
     // Test look behind by moving the iterator forward first,
     // and then looking back by 1 character.
@@ -332,6 +333,14 @@ static void test_rss_iterator_look()
     assert(look_result5.error == false);
     assert(look_result5.error_code == RSS_ITERATOR_ERROR_NONE);
     assert(look_result5.character == 'H');
+    assert(look_result5.direction == RSS_ITERATOR_LOOK_DIRECTION_BACKWARD);
+
+    // Test look none
+    //
+    rss_iterator_look_result look_result6 = rss_iterator_look(iterator_result4->iterator, 0);
+    assert(look_result6.error == false);
+    assert(look_result6.error_code == RSS_ITERATOR_ERROR_NONE);
+    assert(look_result6.direction == RSS_ITERATOR_LOOK_DIRECTION_NONE);
 
     free(iterator_result4->iterator);
     free(iterator_result4);
