@@ -51,6 +51,15 @@ typedef struct rss_create_result
 rss_create_result* rss(const char* str, size_t len, size_t cap);
 
 /**
+ * @brief   destroy the given rss_string structure and free its memory
+ *
+ * @param   {rss_string*} s - the rss_string to be destroyed
+ *
+ * @return  {bool} - true if the string was successfully destroyed, false otherwise
+ */
+bool rss_destroy(rss_string* s);
+
+/**
  * @brief   does the rss_string contains the given character?
  *
  * @param   {const rss_string*} s - the rss_string to be searched

@@ -60,7 +60,7 @@ static void test_rss_iterator_destroy()
 {
     // Test case 1: nullptr iterator
     //
-    assert(rss_iterator_destroy(nullptr, false) == false);
+    assert(rss_iterator_destroy(nullptr, false, false) == false);
 
     // Test case 2: valid iterator
     //
@@ -77,7 +77,7 @@ static void test_rss_iterator_destroy()
     assert(iterator_result2->error == false);
     assert(iterator_result2->error_code == RSS_ITERATOR_ERROR_NONE);
 
-    assert(rss_iterator_destroy(iterator_result2->iterator, false) == true);
+    assert(rss_iterator_destroy(iterator_result2->iterator, false, false) == true);
 }
 
 static void test_rss_iterator_at_end()

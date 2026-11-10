@@ -49,30 +49,17 @@ rss_iterator_create_result* rss_iterator_create(rss_string* string)
     );
 }
 
-bool rss_iterator_destroy(rss_string_iterator* iterator, const bool secure)
+bool rss_iterator_destroy(rss_string_iterator* iterator, const bool secure, const bool destroy_string)
 {
-    if (iterator == nullptr || iterator->string == nullptr)
+    if (iterator == nullptr) return false;
+
+    if (destroy_string && iterator->string != nullptr)
     {
-        return false;
+        if (secure) rss_wipe(iterator->string);
+        rss_destroy(iterator->string);
     }
 
-    // When secure is true, we want to overwrite
-    // the contents of the underlying rss_string
-    // with zeros before freeing it.
-    //
-    if (secure)
-    {
-        rss_wipe(iterator->string);
-    }
-
-    // Free the underlying rss_string and
-    // its array
-    //
-    free(iterator->string->array);
-    free(iterator->string);
-
-    // Free the iterator itself
-    //
+    iterator->string = nullptr;  // defensive: prevent stale use
     free(iterator);
     return true;
 }
@@ -87,24 +74,32 @@ bool rss_iterator_at_end(const rss_string_iterator* iterator)
     return iterator->current_index >= iterator->string->len;
 }
 
-bool rss_iterator_index_move(rss_string_iterator* iterator, size_t amount)
+bool rss_iterator_index_move(rss_string_iterator* iterator, const int amount)
 {
     if (iterator == nullptr || iterator->string == nullptr)
     {
         return false;
     }
 
-    if (iterator->current_index + amount > iterator->string->len)
+    if (amount < 0)
     {
-        return false;
+        // Backward: cannot move below index 0
+        if ((size_t)(-amount) > iterator->current_index)
+        {
+            return false;
+        }
+        iterator->current_index -= (size_t)(-amount);
+    }
+    else
+    {
+        // Forward: cannot move beyond string length
+        if ((size_t)amount > iterator->string->len - iterator->current_index)
+        {
+            return false;
+        }
+        iterator->current_index += (size_t)amount;
     }
 
-    if (iterator->current_index + amount < 0)
-    {
-        return false;
-    }
-
-    iterator->current_index += amount;
     return true;
 }
 

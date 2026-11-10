@@ -49,10 +49,11 @@ rss_iterator_create_result * rss_iterator_create(rss_string *string);
  *
  * @param   {rss_string_iterator*} iterator - the rss_string_iterator to be destroyed
  * @param   {bool} secure - if true, the underlying rss_string will also be wiped and freed
+ * @param   {bool} destroy_string - if true, the underlying rss_string will also be freed
  *
- * @return  {bool}
+ * @return  {bool} - true if the iterator was successfully destroyed, false otherwise
  */
-bool rss_iterator_destroy(rss_string_iterator* iterator, bool secure);
+bool rss_iterator_destroy(rss_string_iterator* iterator, bool secure, bool destroy_string);
 
 /**
  * @brief   Are we at the end of the string?
@@ -67,11 +68,11 @@ bool rss_iterator_at_end(const rss_string_iterator* iterator);
  * @brief   Forward the current index of the iterator by given amount
  *
  * @param   {rss_string_iterator*} iterator - the iterator to forward
- * @param   {size_t} amount - the amount to forward the iterator by
+ * @param   {int} amount - the amount to forward the iterator by
  *
  * @return  {bool} - true if the iterator was successfully forwarded, false otherwise
  */
-bool rss_iterator_index_move(rss_string_iterator* iterator, size_t amount);
+bool rss_iterator_index_move(rss_string_iterator* iterator, int amount);
 
 /**
  * @brief   Get the current character of the iterator
@@ -95,6 +96,5 @@ char rss_iterator_current_char(const rss_string_iterator* iterator);
  *                                          the direction of the look,
  */
 rss_iterator_look_result rss_iterator_look(const rss_string_iterator* iterator, int amount);
-
 
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_ITERATOR_H

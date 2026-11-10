@@ -121,6 +121,22 @@ rss_create_result* rss(const char* str, const size_t len, const size_t cap)
     );
 }
 
+bool rss_destroy(rss_string* s)
+{
+    if (s == nullptr)
+    {
+        return false;
+    }
+
+    if (s->array != nullptr)
+    {
+        free(s->array);
+    }
+
+    free(s);
+    return true;
+}
+
 bool rss_contains_char(const rss_string* s, char c)
 {
     if (s == nullptr || s->array == nullptr)
