@@ -162,3 +162,52 @@ bool rss_array_delete(rss_array* array, const size_t index)
 
     return true;
 }
+
+bool rss_array_has_space(const rss_array* array)
+{
+    if (array == nullptr)
+    {
+        return false;
+    }
+
+    return array->len < array->cap;
+}
+
+bool rss_array_capacity_compress(rss_array* array)
+{
+    if (array == nullptr)
+    {
+        return false;
+    }
+
+    // Cannot compress an array with
+    // no elements (len = 0).
+    //
+    if (array->len == 0)
+    {
+        return false;
+    }
+
+    // Prevent overflow when calculating the total
+    // size of the array
+    //
+    if (array->len > SIZE_MAX / array->element_size)
+    {
+        return false;
+    }
+
+    void* new_elements = realloc(array->elements, array->element_size * array->len);
+    if (new_elements == nullptr)
+    {
+        return false;
+    }
+
+    // Update the array's elements with the
+    // new elements and set the capacity to
+    // the length of the array.
+    //
+    array->elements = new_elements;
+    array->cap = array->len;
+
+    return true;
+}

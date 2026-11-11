@@ -61,4 +61,26 @@ bool rss_array_capacity_grow(rss_array* array, size_t new_cap);
  */
 bool rss_array_delete(rss_array* array, size_t index);
 
+/**
+ * @brief   Does the array have space for more elements?
+ *          Space is available if the length of the array
+ *          is less than the capacity of the array.
+ *
+ * @param   {const rss_array*} array - the rss_array to check for available space
+ *
+ * @return  {bool} - true if the array has space for more elements, false otherwise
+ */
+bool rss_array_has_space(const rss_array* array);
+
+/**
+ * @brief   Compresses the capacity of the array by shrinking it
+ *          to the current length of the array. This is useful for
+ *          freeing unused memory.
+ *
+ * @param   {rss_array*} array - the rss_array to compress the capacity of
+ *
+ * @return  {bool} - true if the capacity was successfully compressed, false otherwise
+ */
+bool rss_array_capacity_compress(rss_array* array);
+
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_ARRAY_H

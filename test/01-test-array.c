@@ -138,6 +138,61 @@ static void test_rss_array_delete()
     free(array3);
 }
 
+static void test_rss_array_has_space()
+{
+    // Test scenario 1: array nullptr
+    //
+    assert(rss_array_has_space(nullptr) == false);
+
+    // Test scenario 2: array has space
+    //
+    rss_array* array2 = rss_array_create(sizeof(int), 10);
+    assert(array2 != nullptr);
+    assert(rss_array_has_space(array2) == true);
+    free(array2->elements);
+    free(array2);
+
+    // Test scenario 3: array is full
+    //
+    rss_array* array3 = rss_array_create(sizeof(int), 1);
+    assert(array3 != nullptr);
+    int element3 = 42;
+    assert(rss_array_add(array3, &element3, sizeof(int)) == true); // len = 1, cap = 1
+    assert(rss_array_has_space(array3) == false); // no space left
+    free(array3->elements);
+    free(array3);
+}
+
+static void test_rss_array_capacity_compress()
+{
+    // Test scenario 1: array nullptr
+    //
+    assert(rss_array_capacity_compress(nullptr) == false);
+
+    // Test scenario 2: successful capacity compress
+    //
+    rss_array* array2 = rss_array_create(sizeof(int), 10);
+    assert(array2 != nullptr);
+
+    // Add some elements to the array
+    int element2a = 42;
+    int element2b = 43;
+    assert(rss_array_add(array2, &element2a, sizeof(int)) == true);
+    assert(rss_array_add(array2, &element2b, sizeof(int)) == true);
+    assert(array2->len == 2);
+
+    assert(rss_array_capacity_compress(array2) == true);
+    assert(array2->cap == array2->len); // capacity should now equal length
+    free(array2->elements);
+    free(array2);
+
+    // Test scenario 3: compressing an empty array
+    //
+    rss_array* array3 = rss_array_create(sizeof(int), 10);
+    assert(array3 != nullptr);
+    assert(rss_array_capacity_compress(array3) == false);
+}
+
 int main()
 {
     test_rss_array_create();
@@ -145,6 +200,8 @@ int main()
     test_rss_array_add();
     test_rss_array_capacity_grow();
     test_rss_array_delete();
+    test_rss_array_has_space();
+    test_rss_array_capacity_compress();
 
     return 0;
 }
