@@ -228,7 +228,7 @@ bool rss_array_has_space(const rss_array* array)
 
 bool rss_array_compress(rss_array* array)
 {
-    if (!rss_array_validate(array) || array->element_size == 0)
+    if (!rss_array_validate(array))
     {
         return false;
     }
