@@ -233,17 +233,6 @@ bool rss_array_compress(rss_array* array)
         return false;
     }
 
-    // Rejection of invalid array states:
-    //  - The elements pointer should not be nullptr,
-    //  - The length of the array should not exceed the capacity,
-    //  - The length of the array should be greater than 0,
-    //    cap 0 means the array should not exist,
-    //
-    if (array->elements == nullptr || array->len > array->cap || array->len <= 0)
-    {
-        return false;
-    }
-
     // Array length cannot exceed the maximum size of the
     // array based on the element size, otherwise realloc
     // will fail and return nullptr.
