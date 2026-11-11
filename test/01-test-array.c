@@ -1,6 +1,26 @@
 #include "../src/array.c"
 
 #include <assert.h>
+#include <stdio.h>
+
+static void test_array_maximum_size()
+{
+    // Test case 1: nullptr array
+    //
+    assert(array_maximum_size(nullptr) == 0);
+
+    // Test case 2: element_size is 0
+    //
+    rss_array array2 = { nullptr, 0, 0, 10 };
+    assert(array_maximum_size(&array2) == 0);
+
+    // Test case 3: normal case
+    //
+    rss_array *array3 = rss_array_create(sizeof(int), 10);
+    assert(array3 != nullptr);
+    size_t expected_max_size = SIZE_MAX / sizeof(int);
+    assert(array_maximum_size(array3) == expected_max_size);
+}
 
 static void test_rss_array_create()
 {
@@ -81,28 +101,29 @@ static void test_rss_array_capacity_grow()
     //
     assert(rss_array_capacity_grow(nullptr, 20) == false);
 
-    // Test scenario 2: new_cap exceeds SIZE_MAX / element_size
+    // Test scenario 2: new capacity exceeds maximum size
     //
     rss_array* array2 = rss_array_create(sizeof(int), 10);
     assert(array2 != nullptr);
     assert(rss_array_capacity_grow(array2, SIZE_MAX / sizeof(int) + 1) == false);
-    free(array2->elements);
     free(array2);
 
-    // Test scenario 3: new_cap is less than current length
+    // Test scenario 3: new capacity less than current length
     //
     rss_array* array3 = rss_array_create(sizeof(int), 10);
     assert(array3 != nullptr);
     int element3 = 42;
-    assert(rss_array_add(array3, &element3, sizeof(int)) == true); // len = 1
-    assert(rss_array_capacity_grow(array3, 0) == false); // new_cap < len
+    assert(rss_array_add(array3, &element3, sizeof(int)) == true);
+    assert(rss_array_capacity_grow(array3, 0) == false); // new
     free(array3->elements);
     free(array3);
 
-    // Test scenario 4: successful capacity growth
+    // Test scenario 4: successful capacity grow
     //
     rss_array* array4 = rss_array_create(sizeof(int), 10);
     assert(array4 != nullptr);
+    int element4 = 42;
+    assert(rss_array_add(array4, &element4, sizeof(int)) == true);
     assert(rss_array_capacity_grow(array4, 20) == true);
     assert(array4->cap == 20);
     free(array4->elements);
@@ -195,6 +216,7 @@ static void test_rss_array_capacity_compress()
 
 int main()
 {
+    test_array_maximum_size();
     test_rss_array_create();
     test_rss_array_destroy();
     test_rss_array_add();

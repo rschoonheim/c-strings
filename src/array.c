@@ -4,6 +4,24 @@
 #include <stdint.h>
 #include <string.h>
 
+/**
+ * @brief   Calculates the maximum number of elements that the array can hold
+ *          based on the size of each element.
+ *
+ * @param   {const rss_array*} array - the rss_array to calculate the maximum size for
+ *
+ * @return  {int} - the maximum number of elements that can be stored in the array
+ */
+static size_t array_maximum_size(const rss_array *array)
+{
+    if (array == nullptr || array->element_size == 0)
+    {
+        return 0;
+    }
+
+    return SIZE_MAX / array->element_size;
+}
+
 rss_array* rss_array_create(const size_t element_size, const size_t cap)
 {
     if (element_size <= 0)
@@ -100,7 +118,7 @@ bool rss_array_capacity_grow(rss_array* array, const size_t new_cap)
     // Prevent overflow when calculating the total
     // size of the array
     //
-    if (new_cap > SIZE_MAX / array->element_size)
+    if (new_cap > array_maximum_size(array))
     {
         return false;
     }
@@ -175,23 +193,24 @@ bool rss_array_has_space(const rss_array* array)
 
 bool rss_array_capacity_compress(rss_array* array)
 {
-    if (array == nullptr)
+    if (array == nullptr || array->element_size == 0)
     {
         return false;
     }
 
-    // Cannot compress an array with
-    // no elements (len = 0).
+    // Array capacity of 0 cannot exist, since this
+    // would mean that the array should have been
+    // destroyed.
     //
-    if (array->len == 0)
+    if (array->len <= 0)
     {
         return false;
     }
 
-    // Prevent overflow when calculating the total
-    // size of the array
+    // The length of the array cannot exceed the
+    // maximum size of the array, since this would
     //
-    if (array->len > SIZE_MAX / array->element_size)
+    if (array->len > array_maximum_size(array))
     {
         return false;
     }
