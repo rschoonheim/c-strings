@@ -14,7 +14,7 @@
  */
 static size_t array_maximum_size(const size_t element_size)
 {
-    if (element_size <= 0)
+    if (element_size == 0)
     {
         return 0;
     }
@@ -24,7 +24,7 @@ static size_t array_maximum_size(const size_t element_size)
 
 rss_array* rss_array_create(const size_t element_size, const size_t cap)
 {
-    if (element_size <= 0)
+    if (element_size == 0 || cap == 0)
     {
         return nullptr;
     }
@@ -73,15 +73,15 @@ bool rss_array_destroy(rss_array* array)
     return true;
 }
 
-bool rss_array_add(rss_array* array, void* element, const size_t element_size)
+bool rss_array_add(rss_array* array, const void* element, const size_t element_size)
 {
     if (array == nullptr || element == nullptr)
     {
         return false;
     }
 
-    // Does the element size fit within the
-    // array's element size?
+    // Only accept elements that matches the
+    // array element size.
     //
     if (element_size != array->element_size)
     {
@@ -111,6 +111,15 @@ bool rss_array_add(rss_array* array, void* element, const size_t element_size)
 bool rss_array_capacity_grow(rss_array* array, const size_t new_cap)
 {
     if (array == nullptr)
+    {
+        return false;
+    }
+
+    // Ensure correctness of the new capacity by ensuring that:
+    //  -   The new capacity is greater than the current capacity
+    //  -   The new capacity is not zero
+    //
+    if (new_cap <= array->cap || new_cap == 0)
     {
         return false;
     }
@@ -191,24 +200,27 @@ bool rss_array_has_space(const rss_array* array)
     return array->len < array->cap;
 }
 
-bool rss_array_capacity_compress(rss_array* array)
+bool rss_array_compress(rss_array* array)
 {
     if (array == nullptr || array->element_size == 0)
     {
         return false;
     }
 
-    // Array capacity of 0 cannot exist, since this
-    // would mean that the array should have been
-    // destroyed.
+    // Rejection of invalid array states:
+    //  - The elements pointer should not be nullptr,
+    //  - The length of the array should not exceed the capacity,
+    //  - The length of the array should be greater than 0,
+    //    cap 0 means the array should not exist,
     //
-    if (array->len <= 0)
+    if (array->elements == nullptr || array->len > array->cap || array->len <= 0)
     {
         return false;
     }
 
-    // The length of the array cannot exceed the
-    // maximum size of the array, since this would
+    // Array length cannot exceed the maximum size of the
+    // array based on the element size, otherwise realloc
+    // will fail and return nullptr.
     //
     if (array->len > array_maximum_size(array->element_size))
     {

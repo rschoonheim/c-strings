@@ -39,7 +39,7 @@ bool rss_array_destroy(rss_array* array);
  *
  * @return  {bool} - true if the element was successfully added, false otherwise
  */
-bool rss_array_add(rss_array* array, void* element, size_t element_size);
+bool rss_array_add(rss_array* array, const void* element, size_t element_size);
 
 /**
  * @brief   Grow the capacity of the array to the new capacity.
@@ -73,14 +73,13 @@ bool rss_array_delete(rss_array* array, size_t index);
 bool rss_array_has_space(const rss_array* array);
 
 /**
- * @brief   Compresses the capacity of the array by shrinking it
- *          to the current length of the array. This is useful for
- *          freeing unused memory.
+ * @brief   Reduce memory usage by compressing the capacity of the array
+ *          to match the current length of the array.
  *
  * @param   {rss_array*} array - the rss_array to compress the capacity of
  *
  * @return  {bool} - true if the capacity was successfully compressed, false otherwise
  */
-bool rss_array_capacity_compress(rss_array* array);
+bool rss_array_compress(rss_array* array);
 
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_ARRAY_H

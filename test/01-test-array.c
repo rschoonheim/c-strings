@@ -93,6 +93,27 @@ static void test_rss_array_add()
     assert(((int*)array4->elements)[0] == 42);
     free(array4->elements);
     free(array4);
+
+    // Test scenario 5: adding element with element size 0
+    //                  results in failure.
+    //
+    rss_array* array5 = rss_array_create(sizeof(int), 10);
+    assert(array5 != nullptr);
+    int element5 = 42;
+    assert(rss_array_add(array5, &element5, 0) == false);
+    free(array5->elements);
+    free(array5);
+
+    // Test scenario 6: adding element when array is full
+    //
+    rss_array* array6 = rss_array_create(sizeof(int), 1);
+    assert(array6 != nullptr);
+    int element6a = 42;
+    int element6b = 43;
+    assert(rss_array_add(array6, &element6a, sizeof(int)) == true);
+    assert(rss_array_add(array6, &element6b, sizeof(int)) == false); // array is full
+    free(array6->elements);
+    free(array6);
 }
 
 static void test_rss_array_capacity_grow()
@@ -184,11 +205,11 @@ static void test_rss_array_has_space()
     free(array3);
 }
 
-static void test_rss_array_capacity_compress()
+static void test_rss_array_compress()
 {
     // Test scenario 1: array nullptr
     //
-    assert(rss_array_capacity_compress(nullptr) == false);
+    assert(rss_array_compress(nullptr) == false);
 
     // Test scenario 2: successful capacity compress
     //
@@ -202,7 +223,7 @@ static void test_rss_array_capacity_compress()
     assert(rss_array_add(array2, &element2b, sizeof(int)) == true);
     assert(array2->len == 2);
 
-    assert(rss_array_capacity_compress(array2) == true);
+    assert(rss_array_compress(array2) == true);
     assert(array2->cap == array2->len); // capacity should now equal length
     free(array2->elements);
     free(array2);
@@ -211,7 +232,7 @@ static void test_rss_array_capacity_compress()
     //
     rss_array* array3 = rss_array_create(sizeof(int), 10);
     assert(array3 != nullptr);
-    assert(rss_array_capacity_compress(array3) == false);
+    assert(rss_array_compress(array3) == false);
 }
 
 int main()
@@ -223,7 +244,7 @@ int main()
     test_rss_array_capacity_grow();
     test_rss_array_delete();
     test_rss_array_has_space();
-    test_rss_array_capacity_compress();
+    test_rss_array_compress();
 
     return 0;
 }
