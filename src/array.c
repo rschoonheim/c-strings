@@ -8,18 +8,18 @@
  * @brief   Calculates the maximum number of elements that the array can hold
  *          based on the size of each element.
  *
- * @param   {const rss_array*} array - the rss_array to calculate the maximum size for
+ * @param   {size_t} element_size - the size of each element in the array
  *
  * @return  {int} - the maximum number of elements that can be stored in the array
  */
-static size_t array_maximum_size(const rss_array *array)
+static size_t array_maximum_size(const size_t element_size)
 {
-    if (array == nullptr || array->element_size == 0)
+    if (element_size <= 0)
     {
         return 0;
     }
 
-    return SIZE_MAX / array->element_size;
+    return SIZE_MAX / element_size;
 }
 
 rss_array* rss_array_create(const size_t element_size, const size_t cap)
@@ -32,7 +32,7 @@ rss_array* rss_array_create(const size_t element_size, const size_t cap)
     // Prevent overflow when calculating the total
     // size of the array
     //
-    if (cap > SIZE_MAX / element_size)
+    if (cap > array_maximum_size(element_size))
     {
         return nullptr;
     }
@@ -118,7 +118,7 @@ bool rss_array_capacity_grow(rss_array* array, const size_t new_cap)
     // Prevent overflow when calculating the total
     // size of the array
     //
-    if (new_cap > array_maximum_size(array))
+    if (new_cap > array_maximum_size(array->element_size))
     {
         return false;
     }
@@ -210,7 +210,7 @@ bool rss_array_capacity_compress(rss_array* array)
     // The length of the array cannot exceed the
     // maximum size of the array, since this would
     //
-    if (array->len > array_maximum_size(array))
+    if (array->len > array_maximum_size(array->element_size))
     {
         return false;
     }

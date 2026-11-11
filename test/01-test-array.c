@@ -7,19 +7,19 @@ static void test_array_maximum_size()
 {
     // Test case 1: nullptr array
     //
-    assert(array_maximum_size(nullptr) == 0);
+    assert(array_maximum_size(0) == 0);
 
     // Test case 2: element_size is 0
     //
     rss_array array2 = { nullptr, 0, 0, 10 };
-    assert(array_maximum_size(&array2) == 0);
+    assert(array_maximum_size(array2.element_size) == 0);
 
     // Test case 3: normal case
     //
     rss_array *array3 = rss_array_create(sizeof(int), 10);
     assert(array3 != nullptr);
     size_t expected_max_size = SIZE_MAX / sizeof(int);
-    assert(array_maximum_size(array3) == expected_max_size);
+    assert(array_maximum_size(array3->element_size) == expected_max_size);
 }
 
 static void test_rss_array_create()
