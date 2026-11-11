@@ -400,6 +400,54 @@ static void test_rss_string_length_between()
     free(string4);
 }
 
+static void test_rss_index_within_bounds()
+{
+    // Test case 1: index is within bounds
+    //
+    const char* str1 = "Hello";
+    size_t len1 = 5;
+    size_t cap1 = 10;
+    rss_create_result* result1 = rss(str1, len1, cap1);
+    assert(result1 != nullptr);
+    assert(result1->error == false);
+    assert(result1->error_code == RSS_STRING_ERROR_NONE);
+    assert(result1->string != nullptr);
+    assert(rss_index_within_bounds(result1->string, 3) == true);
+    free(result1->string->array);
+    free(result1->string);
+    free(result1);
+
+    // Test case 2: index is out of bounds
+    //
+    const char* str2 = "Hello";
+    size_t len2 = 5;
+    size_t cap2 = 10;
+    rss_create_result* result2 = rss(str2, len2, cap2);
+    assert(result2 != nullptr);
+    assert(result2->error == false);
+    assert(result2->error_code == RSS_STRING_ERROR_NONE);
+    assert(result2->string != nullptr);
+    assert(rss_index_within_bounds(result2->string, 5) == false); // Index equal to length is out of bounds
+    free(result2->string->array);
+    free(result2->string);
+    free(result2);
+
+    // Test case 3: latest element index is within bounds
+    //
+    const char* str3 = "Hello";
+    size_t len3 = 5;
+    size_t cap3 = 10;
+    rss_create_result* result3 = rss(str3, len3, cap3);
+    assert(result3 != nullptr);
+    assert(result3->error == false);
+    assert(result3->error_code == RSS_STRING_ERROR_NONE);
+    assert(result3->string != nullptr);
+    assert(rss_index_within_bounds(result3->string, 4) == true);
+    free(result3->string->array);
+    free(result3->string);
+    free(result3);
+}
+
 
 int main()
 {
@@ -409,6 +457,7 @@ int main()
     test_rss_string_contains_char();
     test_rss_string_contains_substring();
     test_rss_string_length_between();
+    test_rss_index_within_bounds();
 
     return 0;
 }

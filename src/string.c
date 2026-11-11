@@ -215,3 +215,11 @@ bool rss_wipe(rss_string* s)
     return true;
 }
 
+bool rss_index_within_bounds(const rss_string* s, const size_t index)
+{
+    if (s == nullptr)
+    {
+        return false;
+    }
+    return index < s->len;
+}

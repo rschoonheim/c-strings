@@ -102,4 +102,17 @@ bool rss_length_between(const rss_string* s, size_t min_len, size_t max_len);
  */
 bool rss_wipe(rss_string* s);
 
+/**
+ * @brief   checks if the given index is within the bounds of the
+ *          given rss_string structure. The bounds are defined as
+ *          0 <= index < s->len
+ *
+ * @param   {const rss_string*} s - the rss_string to be checked
+ * @param   {size_t} index - the index to be checked
+ *
+ * @return  {bool} -    true if the index is within bounds,
+ *                      false otherwise
+ */
+bool rss_index_within_bounds(const rss_string* s, size_t index);
+
 #endif //ROMANO_SCHOONHEIM_C_STRINGS_STRING_H

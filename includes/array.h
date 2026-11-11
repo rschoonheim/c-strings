@@ -1,0 +1,64 @@
+#ifndef ROMANO_SCHOONHEIM_C_STRINGS_ARRAY_H
+#define ROMANO_SCHOONHEIM_C_STRINGS_ARRAY_H
+#include <stddef.h>
+
+typedef struct rss_array
+{
+    void* elements;
+    size_t element_size;
+    size_t len;
+    size_t cap;
+} rss_array;
+
+/**
+ * @brief   Creates a new rss_array with enough space to hold `cap`
+ *          elements of size `element_size`.
+ *
+ * @param   {size_t} element_size - the size of each element in the array
+ * @param   {size_t} cap - the capacity of the array
+ *
+ * @return  {rss_array*} - a pointer to the created rss_array, or nullptr if allocation fails
+ */
+rss_array* rss_array_create(size_t element_size, size_t cap);
+
+/**
+ * @brief   Destroys the given rss_array and frees its memory.
+ *
+ * @param   {rss_array*} array - the rss_array to be destroyed
+ *
+ * @return  {bool} - true if the array was successfully destroyed, false otherwise
+ */
+bool rss_array_destroy(rss_array* array);
+
+/**
+ * @brief   Adds an element to the end of the array.
+ *
+ * @param   {rss_array*} array - the rss_array to add the element to
+ * @param   {void*} element - a pointer to the element to be added
+ * @param   {size_t} element_size - the size of the element to be added
+ *
+ * @return  {bool} - true if the element was successfully added, false otherwise
+ */
+bool rss_array_add(rss_array* array, void* element, size_t element_size);
+
+/**
+ * @brief   Grow the capacity of the array to the new capacity.
+ *
+ * @param   {rss_array*} array - the rss_array to update the capacity of
+ * @param   {size_t} new_cap - the new capacity of the array
+ *
+ * @return  {bool} - true if the capacity was successfully updated, false otherwise
+ */
+bool rss_array_capacity_grow(rss_array* array, size_t new_cap);
+
+/**
+ * @brief   Delete an element from the array at the given index.
+ *
+ * @param   {rss_array*} array - the rss_array to delete the element from
+ * @param   {size_t} index - the index of the element to delete
+ *
+ * @return  {bool} - true if the element was successfully deleted, false otherwise
+ */
+bool rss_array_delete(rss_array* array, size_t index);
+
+#endif //ROMANO_SCHOONHEIM_C_STRINGS_ARRAY_H
