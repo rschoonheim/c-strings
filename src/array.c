@@ -22,6 +22,26 @@ static size_t array_maximum_size(const size_t element_size)
     return SIZE_MAX / element_size;
 }
 
+bool rss_array_validate(const rss_array* array)
+{
+    if (array == nullptr)
+    {
+        return false;
+    }
+
+    // Validate the array's internal state:
+    //  - The elements pointer should not be nullptr,
+    //  - The length of the array should not exceed the capacity,
+    //  - The element size should not be zero,
+    //
+    if (array->elements == nullptr || array->len > array->cap || array->element_size == 0)
+    {
+        return false;
+    }
+
+    return true;
+}
+
 rss_array* rss_array_create(const size_t element_size, const size_t cap)
 {
     if (element_size == 0 || cap == 0)
@@ -73,9 +93,15 @@ bool rss_array_destroy(rss_array* array)
     return true;
 }
 
+
 bool rss_array_add(rss_array* array, const void* element, const size_t element_size)
 {
-    if (array == nullptr || element == nullptr)
+    if (!rss_array_validate(array))
+    {
+        return false;
+    }
+
+    if (element == nullptr)
     {
         return false;
     }
@@ -110,7 +136,7 @@ bool rss_array_add(rss_array* array, const void* element, const size_t element_s
 
 bool rss_array_capacity_grow(rss_array* array, const size_t new_cap)
 {
-    if (array == nullptr)
+    if (!rss_array_validate(array))
     {
         return false;
     }
@@ -154,7 +180,7 @@ bool rss_array_capacity_grow(rss_array* array, const size_t new_cap)
 
 bool rss_array_delete(rss_array* array, const size_t index)
 {
-    if (array == nullptr)
+    if (!rss_array_validate(array))
     {
         return false;
     }
@@ -192,7 +218,7 @@ bool rss_array_delete(rss_array* array, const size_t index)
 
 bool rss_array_has_space(const rss_array* array)
 {
-    if (array == nullptr)
+    if (!rss_array_validate(array))
     {
         return false;
     }
@@ -202,7 +228,7 @@ bool rss_array_has_space(const rss_array* array)
 
 bool rss_array_compress(rss_array* array)
 {
-    if (array == nullptr || array->element_size == 0)
+    if (!rss_array_validate(array) || array->element_size == 0)
     {
         return false;
     }

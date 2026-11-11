@@ -22,6 +22,38 @@ static void test_array_maximum_size()
     assert(array_maximum_size(array3->element_size) == expected_max_size);
 }
 
+static void test_rss_array_validate()
+{
+    // Test case 1: nullptr array
+    //
+    assert(rss_array_validate(nullptr) == false);
+
+    // Test case 2: valid array
+    //
+    rss_array *array2 = rss_array_create(sizeof(int), 10);
+    assert(array2 != nullptr);
+    assert(rss_array_validate(array2) == true);
+    free(array2->elements);
+    free(array2);
+
+    // Test case 3: invalid array (elements is nullptr)
+    //
+    rss_array array3 = { nullptr, sizeof(int), 0, 10 };
+    assert(rss_array_validate(&array3) == false);
+
+    // Test case 4: invalid array (len > cap)
+    //
+    rss_array array4 = { malloc(sizeof(int) * 10), sizeof(int), 11, 10 };
+    assert(rss_array_validate(&array4) == false);
+    free(array4.elements);
+
+    // Test case 5: invalid array (element_size is 0)
+    //
+    rss_array array5 = { malloc(sizeof(int) * 10), 0, 0, 10 };
+    assert(rss_array_validate(&array5) == false);
+    free(array5.elements);
+}
+
 static void test_rss_array_create()
 {
     // Test scenario 1: successful creation
@@ -238,6 +270,7 @@ static void test_rss_array_compress()
 int main()
 {
     test_array_maximum_size();
+    test_rss_array_validate();
     test_rss_array_create();
     test_rss_array_destroy();
     test_rss_array_add();

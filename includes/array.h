@@ -11,15 +11,21 @@ typedef struct rss_array
 } rss_array;
 
 /**
- * @brief   Creates a new rss_array with enough space to hold `cap`
- *          elements of size `element_size`.
+ * @brief   When receiving an array from "the outside world", we need to verify
+ *          that the array is valid and that it can be used safely. This function
+ *          checks the validity of the array and returns true if it is valid,
+ *          false otherwise.
  *
- * @param   {size_t} element_size - the size of each element in the array
- * @param   {size_t} cap - the capacity of the array
+ *          Invalid state of arrays is caused by external factors, such as:
+ *              - Changes to the array structure from outside the library,
+ *              - Corruption of the array structure in memory,
+ *              - Invalid memory access to the array structure.
  *
- * @return  {rss_array*} - a pointer to the created rss_array, or nullptr if allocation fails
+ * @param   {rss_array*} array - the rss_array to check
+ *
+ * @return  {bool} - true if the array is valid, false otherwise
  */
-rss_array* rss_array_create(size_t element_size, size_t cap);
+bool rss_array_validate(const rss_array* array);
 
 /**
  * @brief   Destroys the given rss_array and frees its memory.
@@ -29,6 +35,17 @@ rss_array* rss_array_create(size_t element_size, size_t cap);
  * @return  {bool} - true if the array was successfully destroyed, false otherwise
  */
 bool rss_array_destroy(rss_array* array);
+
+/**
+ * @brief   Creates a new rss_array with enough space to hold `cap`
+ *          elements of size `element_size`.
+ *
+ * @param   {size_t} element_size - the size of each element in the array
+ * @param   {size_t} cap - the capacity of the array
+ *
+ * @return  {rss_array*} - a pointer to the created rss_array, or nullptr if allocation fails
+ */
+rss_array* rss_array_create(size_t element_size, size_t cap);
 
 /**
  * @brief   Adds an element to the end of the array.
